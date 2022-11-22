@@ -28,5 +28,11 @@ public interface IArticleService {
 
     // 根据主键删除文章
     public void deleteArticleWithId(int id);
+
+    // 点赞数增加
+    public void favorCountUP(Integer favorCount,Integer id);
+
+    //点赞数减少
+    public void favorDOWN(Integer favorCount,Integer id);
 }
 

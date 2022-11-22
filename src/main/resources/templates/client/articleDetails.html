@@ -59,6 +59,9 @@
             like_num = like_num + 1;
             $('.like-num').html(like_num);
             $('.like-icon').attr('data-key', '');
+            $.ajax({
+                url:""
+            })
         } else {
             $('.like-icon').removeClass('on');
             like_num = like_num - 1;

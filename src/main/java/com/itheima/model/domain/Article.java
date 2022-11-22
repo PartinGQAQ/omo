@@ -17,9 +17,14 @@ public class Article {
     private Boolean allowComment; // 是否允许评论，默认为true
     private String thumbnail;     // 文章缩略图
 
+    public Article() {
+    }
+
     private Integer hits;       // 点击量
+
     private Integer commentsNum;  // 评论总量
 
+    private Integer favorCount; //点赞数量
 
     public Integer getId() {
         return id;
@@ -31,6 +36,15 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+
+    public Integer getFavorCount() {
+        return favorCount;
+    }
+
+
+    public void setFavorCount(Integer favorCount) {
+        this.favorCount = favorCount;
     }
 
     public void setTitle(String title) {
@@ -125,4 +139,20 @@ public class Article {
                 ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
+
+    public Article(Integer id, String title, String content, Date created, Date modified, String categories, String tags, Boolean allowComment, String thumbnail, Integer hits, Integer commentsNum, Integer favorCount) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.created = created;
+        this.modified = modified;
+        this.categories = categories;
+        this.tags = tags;
+        this.allowComment = allowComment;
+        this.thumbnail = thumbnail;
+        this.hits = hits;
+        this.commentsNum = commentsNum;
+        this.favorCount = favorCount;
+    }
+
 }

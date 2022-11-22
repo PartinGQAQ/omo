@@ -38,4 +38,10 @@ public interface ArticleMapper {
 
     // 通过id更新文章
     public Integer updateArticleWithId(Article article);
+
+    //改变文章点赞数
+    @Update("UPDATE t_article SET favorCount=#{favorCount}" +
+            " WHERE id=#{id}")
+    public void favorNumberUP(Integer favorCount,Integer id);
+
 }
