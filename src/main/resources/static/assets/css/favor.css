@@ -1,0 +1,31 @@
+body{
+    background: grey;
+}
+
+.likeIcon-wrap {
+    text-align: right;
+}
+
+.like-icon {
+    width: 30px;
+    height: 30px;
+    background: url("../img/disfavor.png") no-repeat center;
+    background-size: 30px 30px;
+    display: inline-block;
+}
+
+.on {
+    background: url("../img/favor.png") no-repeat center;
+    background-size: 30px 30px;
+    display: inline-block;
+}
+
+.like-num {
+    width: 30px;
+    height: 30px;
+    color: #211f1f;
+    font-size: 15px;
+    margin-bottom: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
