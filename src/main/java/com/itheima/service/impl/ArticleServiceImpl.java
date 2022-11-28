@@ -117,5 +117,29 @@ public class ArticleServiceImpl implements IArticleService {
         commentMapper.deleteCommentWithId(id);
     }
 
+    //点赞增加
+    @Override
+    public void favorCountUP(Integer id) {
+        //获取文章
+        Article article = articleMapper.selectArticleWithId(id);
+        //当前点赞数增加
+        article.setFavorCount(article.getFavorCount() + 1);
+        //当前的点赞增加
+        articleMapper.favorNumberUP(article.getFavorCount(),id);
+        //ToDo
+    }
+
+    //点赞减少
+    @Override
+    public void favorDOWN(Integer id) {
+        //获取文章
+        Article article = articleMapper.selectArticleWithId(id);
+        //当前点赞数增加
+        article.setFavorCount(article.getFavorCount() - 1);
+        //当前的点赞增加
+        articleMapper.favorNumberUP(article.getFavorCount(),id);
+        //ToDo
+    }
+
 }
 

@@ -19,7 +19,7 @@ public class LoginController {
         // 分别获取请求头和参数url中的原始访问路径
         String referer = request.getHeader("Referer");
         String url = request.getParameter("url");
-        if (referer.equals("http://localhost/toRegister")){
+        if (referer != null && referer.equals("http://localhost/toRegister")){
             referer = null;
         }
         System.out.println("referer= "+referer);

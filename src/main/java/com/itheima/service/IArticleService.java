@@ -30,9 +30,9 @@ public interface IArticleService {
     public void deleteArticleWithId(int id);
 
     // 点赞数增加
-    public void favorCountUP(Integer favorCount,Integer id);
+    public void favorCountUP(Integer id);
 
     //点赞数减少
-    public void favorDOWN(Integer favorCount,Integer id);
+    public void favorDOWN(Integer id);
 }
 

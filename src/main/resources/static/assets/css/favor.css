@@ -4,6 +4,11 @@ body{
 
 .likeIcon-wrap {
     text-align: right;
+    height: 70px;
+}
+
+.likeIcon-wrap>div{
+    line-height: 30px;
 }
 
 .like-icon {
@@ -11,13 +16,13 @@ body{
     height: 30px;
     background: url("../img/disfavor.png") no-repeat center;
     background-size: 30px 30px;
-    display: inline-block;
+    float: right;
 }
 
 .on {
     background: url("../img/favor.png") no-repeat center;
     background-size: 30px 30px;
-    display: inline-block;
+    float: right;
 }
 
 .like-num {
@@ -25,7 +30,6 @@ body{
     height: 30px;
     color: #211f1f;
     font-size: 15px;
-    margin-bottom: 15px;
-    display: inline-block;
+    float: right;
     vertical-align: middle;
 }

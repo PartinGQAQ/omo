@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xml:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:sec="http://www.w3.org/1999/xhtml">>
+      xml:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/layer.js}"></script>
@@ -15,7 +15,7 @@
             <time th:datetime="${commons.dateFormat(article.created)}" itemprop="datePublished" th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></time>
         </div>
     </div>
-    <br />
+    <br/>
     <div id="post-content" class="post-content content" th:utext="${commons.article(article.content)}"></div>
     <div style="text-align: right" sec:authorize="isAuthenticated()">
 <!--        设置了只有登录才有点赞的选项出现-->
