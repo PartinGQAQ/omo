@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.itheima.dao.ArticleMapper;
 import com.itheima.dao.CommentMapper;
 import com.itheima.dao.StatisticMapper;
+import com.itheima.dao.UserMapper;
 import com.itheima.model.domain.Article;
 import com.itheima.model.domain.Statistic;
+import com.itheima.model.domain.User;
 import com.itheima.service.IArticleService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Classname ArticleServiceImpl
@@ -35,6 +35,9 @@ public class ArticleServiceImpl implements IArticleService {
     private RedisTemplate redisTemplate;
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     // 分页查询文章列表
     @Override
@@ -73,6 +76,9 @@ public class ArticleServiceImpl implements IArticleService {
     public Article selectArticleWithId(Integer id){
         Article article = null;
         Object o = redisTemplate.opsForValue().get("article_" + id);
+
+        //TODO
+        //查询是否已经点赞过了
         if(o!=null){
             article=(Article)o;
         }else{
@@ -119,26 +125,74 @@ public class ArticleServiceImpl implements IArticleService {
 
     //点赞增加
     @Override
-    public void favorCountUP(Integer id) {
+    public Map<String, Object> favorCountUP(Article article, String userName) {
+        //获取用户的ID
+        User user = userMapper.findByUsername(userName);
+        Integer user_id = user.getId();
+
         //获取文章
-        Article article = articleMapper.selectArticleWithId(id);
+        Integer article_id = article.getId();
+        article = articleMapper.selectArticleWithId(article_id);
         //当前点赞数增加
         article.setFavorCount(article.getFavorCount() + 1);
         //当前的点赞增加
-        articleMapper.favorNumberUP(article.getFavorCount(),id);
-        //ToDo
+        articleMapper.favorNumberUP(article.getFavorCount(),article_id);
+        //更新点赞关系表
+        articleMapper.addFavor(article_id,user_id);
+
+        //更新redis中的article
+        redisTemplate.delete("article_" + article.getId());
+
+        //返回信息
+        Map<String,Object> res = new HashMap<>();
+        res.put("code",200);
+        res.put("message","点赞成功");
+
+        System.out.println("点赞了👍");
+        return res;
     }
 
     //点赞减少
     @Override
-    public void favorDOWN(Integer id) {
+    public Map<String, Object> favorCountDOWN(Article article, String userName) {
+        //获取用户的ID
+        User user = userMapper.findByUsername(userName);
+        Integer user_id = user.getId();
+
         //获取文章
-        Article article = articleMapper.selectArticleWithId(id);
-        //当前点赞数增加
+        Integer article_id = article.getId();
+        article = articleMapper.selectArticleWithId(article.getId());
+        //当前点赞数减少
         article.setFavorCount(article.getFavorCount() - 1);
-        //当前的点赞增加
-        articleMapper.favorNumberUP(article.getFavorCount(),id);
+        //当前的点赞减少
+        articleMapper.favorNumberUP(article.getFavorCount(),article_id);
         //ToDo
+        //更新点赞关系表
+        articleMapper.cancelFavor(article_id,user_id);
+        redisTemplate.delete("article_" + article.getId());
+
+        System.out.println("取消点赞");
+        //返回信息
+        Map<String,Object> res = new HashMap<>();
+        res.put("code",200);
+        res.put("message","取消点赞");
+        return res;
+    }
+
+    @Override
+    public Boolean isFavor(Integer article_id, String userName) {
+
+        //获取用户的ID
+        User user = userMapper.findByUsername(userName);
+        Integer user_id = user.getId();
+
+        //获取是否
+        Integer isFavor = articleMapper.selectFavor(article_id,user_id);
+        if (isFavor == null){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }

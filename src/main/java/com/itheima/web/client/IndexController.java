@@ -10,6 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,11 +62,33 @@ public class IndexController {
     public String getArticleById(@PathVariable("id") Integer id, HttpServletRequest request){
         Article article = articleServiceImpl.selectArticleWithId(id);
         if(article!=null){
+            //查询当前用户
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = context.getAuthentication();
+
+
+
             // 查询封装评论相关数据
             getArticleComments(request, article);
             // 更新文章点击量
             siteServiceImpl.updateStatistics(article);
             request.setAttribute("article",article);
+
+            //查询是否点过赞
+            if (authentication.getPrincipal() != "anonymousUser"){
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                if(articleServiceImpl.isFavor(article.getId(), userDetails.getUsername())){
+                    //如果登录点过赞返回1
+                    request.setAttribute("isFavor",1);
+                }else {
+                    //如果没点过赞就返回0
+                    request.setAttribute("isFavor",0);
+                }
+            }else {
+                //如果没有登录返回一个0
+                request.setAttribute("isFavor",0);
+            }
+
             return "client/articleDetails";
         }else {
             logger.warn("查询文章详情结果为空，查询文章id: "+id);

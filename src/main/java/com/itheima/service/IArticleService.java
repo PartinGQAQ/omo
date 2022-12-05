@@ -2,7 +2,11 @@ package com.itheima.service;
 
 import com.github.pagehelper.PageInfo;
 import com.itheima.model.domain.Article;
+import com.itheima.model.domain.User;
+
 import java.util.List;
+import java.util.Map;
+
 /**
  * @Classname IArticleService
  * @Description TODO
@@ -30,9 +34,12 @@ public interface IArticleService {
     public void deleteArticleWithId(int id);
 
     // 点赞数增加
-    public void favorCountUP(Integer id);
+    public Map<String, Object> favorCountUP(Article article, String userName);
 
     //点赞数减少
-    public void favorDOWN(Integer id);
+    public Map<String, Object> favorCountDOWN(Article article, String userName);
+
+    //是否点过赞
+    public Boolean isFavor(Integer article_id,String userName);
 }
 

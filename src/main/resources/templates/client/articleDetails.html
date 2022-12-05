@@ -5,12 +5,15 @@
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/layer.js}"></script>
     <link rel="stylesheet" href="../../static/assets/css/favor.css" th:href="@{/assets/css/favor.css}">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <div th:replace="client/header::header(${article.title},null)"></div>
 <body>
 <article class="main-content post-page">
     <div class="post-header">
         <h1 class="post-title" itemprop="name headline" th:text="${article.title}"></h1>
+        <a class="article-id" th:text="${article.id}"></a>
         <div class="post-data">
             <time th:datetime="${commons.dateFormat(article.created)}" itemprop="datePublished" th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></time>
         </div>
@@ -20,15 +23,27 @@
     <div style="text-align: right" sec:authorize="isAuthenticated()">
 <!--        设置了只有登录才有点赞的选项出现-->
         <div class="likeIcon-wrap">
+            <div class="isFavor" th:text="${isFavor}" hidden ></div>
+<!--            获取当前的点赞状态-->
             <div class="like-icon" data-key="on"></div>
-            <div class="like-num">1</div>
+            <div class="like-num" th:text="${article.favorCount}"></div>
         </div>
     </div>
 </article>
 <div th:replace="client/comments::comments"></div>
 <div th:replace="client/footer::footer"></div>
 <!-- 使用layer.js实现图片缩放功能 -->
-<script type="text/JavaScript">
+<script type="text/JavaScript" th:inline="javascript">
+    //设置CSRF认证
+    $(function (){
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e,xhr,options){
+           xhr.setRequestHeader(header,token)
+        });
+    })
+
+    //图片的缩放
     $('.post-content img').on('click', function(){
         var imgurl=$(this).attr('src');
         var w=this.width*2;
@@ -43,12 +58,24 @@
         });
     });
 
+    //点击后触发函数ClickCount
     $(document).ready(function () {
+        //选择是否已经点过赞
+        var isFavor = Number($('.isFavor').html())
+        if(isFavor == 1){
+            $('.like-icon').addClass('on');
+            $('.like-icon').attr('data-key', '');
+        }
         // likeClickCount
         $(".like-icon").on('click', function () {
             likeClickCount();
         })
     })
+
+
+
+    //获取当前的文章的ID
+    var article_id = $('.article-id').html();
     // likeClickCount
     function likeClickCount() {
     //Number函数将对象的值转换成数字
@@ -59,16 +86,45 @@
             like_num = like_num + 1;
             $('.like-num').html(like_num);
             $('.like-icon').attr('data-key', '');
+
+            //后端的数据增加
             $.ajax({
-                url:""
+                url:"/Favor",
+                type: "POST",
+                data:{
+                    id:$('.article-id').html()
+                },
+                resultType:"JSON",
+                success: function (result){
+                    alert(result.message)
+                },error(){
+                    alert("点赞失败")
+                }
             })
         } else {
             $('.like-icon').removeClass('on');
             like_num = like_num - 1;
             $('.like-num').html(like_num);
             $('.like-icon').attr('data-key', 'on');
+
+            //后端数据的减少
+            $.ajax({
+                url: "/cancleFavor",
+                type: "POST",
+                data: {
+                    id: $('.article-id').html()
+                },
+                resultType: "JSON",
+                success: function (result){
+                    alert(result.message)
+                },error(){
+                    alert("取消失败")
+                }
+            })
         }
     }
 </script>
+
+
 </body>
 </html>
