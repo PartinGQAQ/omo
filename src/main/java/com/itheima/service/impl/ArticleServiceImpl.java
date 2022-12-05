@@ -77,7 +77,6 @@ public class ArticleServiceImpl implements IArticleService {
         Article article = null;
         Object o = redisTemplate.opsForValue().get("article_" + id);
 
-        //TODO
         //查询是否已经点赞过了
         if(o!=null){
             article=(Article)o;
@@ -166,7 +165,6 @@ public class ArticleServiceImpl implements IArticleService {
         article.setFavorCount(article.getFavorCount() - 1);
         //当前的点赞减少
         articleMapper.favorNumberUP(article.getFavorCount(),article_id);
-        //ToDo
         //更新点赞关系表
         articleMapper.cancelFavor(article_id,user_id);
         redisTemplate.delete("article_" + article.getId());

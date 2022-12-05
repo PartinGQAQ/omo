@@ -53,7 +53,6 @@ public interface ArticleMapper {
     @Delete("DELETE FROM t_favor WHERE article_id=#{article_id} AND user_id=#{user_id}")
     public void cancelFavor(Integer article_id,Integer user_id);
 
-    //TODO
     //查找是否存在一个点赞关系
     @Select("SELECT id FROM t_favor WHERE article_id=#{article_id} AND user_id=#{user_id}")
     public Integer selectFavor(Integer article_id,Integer user_id);
