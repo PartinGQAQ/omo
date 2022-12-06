@@ -2,14 +2,19 @@ package com.itheima.web.client;
 
 import com.itheima.model.ResponseData.ArticleResponseData;
 import com.itheima.model.domain.Comment;
+import com.itheima.model.domain.Email;
 import com.itheima.service.ICommentService;
+import com.itheima.utils.EmailUtil;
 import com.itheima.utils.MyUtils;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +57,22 @@ public class CommentController {
         try {
             commentServcieImpl.pushComment(comments);
             logger.info("发布评论成功，对应文章id: "+aid);
+
+            //发送通知邮件
+            //TODO
+            //获取当前的用户
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = context.getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            String userName = userDetails.getUsername();
+            //封装Email信息
+            Email email = new Email();
+            email.setToEmail("835315673@qq.com");
+            email.setSub("你的文章id:"+aid+"被: @"+userName+" 回复了");
+            email.setText("回复内容为:\n" + text);
+            EmailUtil.sendEmail(email);
+
             return ArticleResponseData.ok();
         } catch (Exception e) {
             logger.error("发布评论失败，对应文章id: "+aid +";错误描述: "+e.getMessage());
