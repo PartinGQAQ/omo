@@ -139,6 +139,9 @@ public class ArticleServiceImpl implements IArticleService {
         //更新点赞关系表
         articleMapper.addFavor(article_id,user_id);
 
+        //更新统计表
+        statisticMapper.updateArticleFavorCountWithId(article.getFavorCount(),article_id);
+
         //更新redis中的article
         redisTemplate.delete("article_" + article.getId());
 
@@ -167,6 +170,11 @@ public class ArticleServiceImpl implements IArticleService {
         articleMapper.favorNumberUP(article.getFavorCount(),article_id);
         //更新点赞关系表
         articleMapper.cancelFavor(article_id,user_id);
+
+        //更新统计表
+        statisticMapper.updateArticleFavorCountWithId(article.getFavorCount(),article_id);
+
+        //缓存更新
         redisTemplate.delete("article_" + article.getId());
 
         System.out.println("取消点赞");

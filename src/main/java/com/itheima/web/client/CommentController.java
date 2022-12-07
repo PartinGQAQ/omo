@@ -68,7 +68,7 @@ public class CommentController {
             String userName = userDetails.getUsername();
             //封装Email信息
             Email email = new Email();
-            email.setToEmail("835315673@qq.com");
+            email.setToEmail("18993134862@163.com");
             email.setSub("你的文章id:"+aid+"被: @"+userName+" 回复了");
             email.setText("回复内容为:\n" + text);
             EmailUtil.sendEmail(email);

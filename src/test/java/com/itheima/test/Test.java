@@ -1,6 +1,7 @@
 package com.itheima.test;
 
 import com.itheima.dao.ArticleMapper;
+import com.itheima.dao.StatisticMapper;
 import com.itheima.model.domain.Article;
 import com.itheima.model.domain.Email;
 import com.itheima.service.impl.ArticleServiceImpl;
@@ -22,13 +23,12 @@ public class Test {
     @Autowired
     private ArticleServiceImpl articleService;
 
+    @Autowired
+    private StatisticMapper statisticMapper;
+
     @org.junit.Test
     public void cc(){
-        Article article = articleMapper.selectArticleWithId(3);
-        System.out.println(article.getFavorCount());
-        article.setFavorCount(article.getFavorCount() + 1);
-        Integer id = article.getId();
-        articleMapper.favorNumberUP(article.getFavorCount(),id);
+        statisticMapper.updateArticleFavorCountWithId(1,2);
     }
 
 

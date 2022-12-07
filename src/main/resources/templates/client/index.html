@@ -17,6 +17,8 @@
                     <span>&nbsp;&nbsp;&nbsp;</span>
                     <!-- 发布时间 -->
                     <span style="font-size: 15px;" th:text="'发布于 '+ ${commons.dateFormat(article.created)}" />
+                    <span style="font-size: 13px">获赞</span>
+                    <span style="font-size: 13px" th:text="${article.favorCount}"></span>
                     <h2>
                         <div><a style="color: #0f9ae0;font-size: 20px;" th:href="${commons.permalink(article.id)}" th:text="${article.title}" />
                         </div>

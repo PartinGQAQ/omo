@@ -35,6 +35,11 @@ public interface StatisticMapper {
     @Delete("DELETE FROM t_statistic WHERE article_id=#{aid}")
     public void deleteStatisticWithId(int aid);
 
+    //根据文章id更新点赞量
+    @Delete("UPDATE t_statistic SET favorCount=#{favorCount} " +
+            "WHERE article_id=#{article_id}")
+    public void updateArticleFavorCountWithId(Integer favorCount,Integer article_id);
+
     // 统计文章热度信息
     @Select("SELECT * FROM t_statistic WHERE hits !='0' " +
             "ORDER BY hits DESC, comments_num DESC")
