@@ -7,21 +7,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", created=" + created +
-                ", valid=" + valid +
-                ", level=" + level +
-                ", ex_point=" + ex_point +
-                '}';
-    }
-
     private Date created;
     private int valid;
     private int level;
@@ -104,5 +89,17 @@ public class User {
         this.ex_point = ex_poind;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", created=" + created +
+                ", valid=" + valid +
+                ", level=" + level +
+                ", ex_point=" + ex_point +
+                '}';
+    }
 }

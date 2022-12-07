@@ -65,9 +65,6 @@ public class IndexController {
             //查询当前用户
             SecurityContext context = SecurityContextHolder.getContext();
             Authentication authentication = context.getAuthentication();
-
-
-
             // 查询封装评论相关数据
             getArticleComments(request, article);
             // 更新文章点击量

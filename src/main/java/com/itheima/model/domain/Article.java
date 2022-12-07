@@ -16,20 +16,15 @@ public class Article {
     private String tags;        // 文章标签
     private Boolean allowComment; // 是否允许评论，默认为true
     private String thumbnail;     // 文章缩略图
-
-    public Article() {
-    }
-
     private Integer hits;       // 点击量
-
     private Integer commentsNum;  // 评论总量
-
     private Integer favorCount; //点赞数量
+
+
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -154,5 +149,6 @@ public class Article {
         this.commentsNum = commentsNum;
         this.favorCount = favorCount;
     }
-
+    public Article() {
+    }
 }

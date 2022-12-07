@@ -19,7 +19,7 @@ public class EmailUtil {
 
         //获取Session
         Session session = Session.getInstance(properties);
-        session.setDebug(true);
+        session.setDebug(false);
 
         return session;
     }

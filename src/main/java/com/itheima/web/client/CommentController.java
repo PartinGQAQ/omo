@@ -1,9 +1,12 @@
 package com.itheima.web.client;
 
+import com.itheima.dao.ArticleMapper;
 import com.itheima.model.ResponseData.ArticleResponseData;
+import com.itheima.model.domain.Article;
 import com.itheima.model.domain.Comment;
 import com.itheima.model.domain.Email;
 import com.itheima.service.ICommentService;
+import com.itheima.utils.DingTalkPushUtil;
 import com.itheima.utils.EmailUtil;
 import com.itheima.utils.MyUtils;
 import com.vdurmont.emoji.EmojiParser;
@@ -38,6 +41,9 @@ public class CommentController {
     @Autowired
     private ICommentService commentServcieImpl;
 
+    @Autowired
+    private ArticleMapper articleMapper;
+
     // 发表评论操作
     @PostMapping(value = "/publish")
     @ResponseBody
@@ -59,19 +65,27 @@ public class CommentController {
             logger.info("发布评论成功，对应文章id: "+aid);
 
             //发送通知邮件
-            //TODO
             //获取当前的用户
             SecurityContext context = SecurityContextHolder.getContext();
             Authentication authentication = context.getAuthentication();
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             String userName = userDetails.getUsername();
+
+            //获取文章的Title
+            Article article = articleMapper.selectArticleWithId(aid);
+            String title = article.getTitle();
+
             //封装Email信息
             Email email = new Email();
             email.setToEmail("18993134862@163.com");
-            email.setSub("你的文章id:"+aid+"被: @"+userName+" 回复了");
+            email.setSub("你的文章:"+title+"被: @"+userName+" 回复了");
             email.setText("回复内容为:\n" + text);
             EmailUtil.sendEmail(email);
+
+            //钉钉的回复
+            DingTalkPushUtil dingTalkPushUtil = new DingTalkPushUtil();
+            dingTalkPushUtil.pushText("小马提醒：你的博客："+ title +"被@" + userName + "回复了");
 
             return ArticleResponseData.ok();
         } catch (Exception e) {

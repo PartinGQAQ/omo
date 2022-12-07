@@ -5,6 +5,7 @@ import com.itheima.dao.StatisticMapper;
 import com.itheima.model.domain.Article;
 import com.itheima.model.domain.Email;
 import com.itheima.service.impl.ArticleServiceImpl;
+import com.itheima.utils.DingTalkPushUtil;
 import com.itheima.utils.EmailUtil;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +27,15 @@ public class Test {
     @Autowired
     private StatisticMapper statisticMapper;
 
+
+
     @org.junit.Test
     public void cc(){
-        statisticMapper.updateArticleFavorCountWithId(1,2);
-    }
+        DingTalkPushUtil dingTalkPushUtil = new DingTalkPushUtil();
+        dingTalkPushUtil.pushText("小马来信");
 
-
-//    @org.junit.Test
-//    public void c2(){
-//        FavorController favorController = new FavorController();
-//        Article article = new Article();
-//        article.setId(1);
-//        articleService.favorCountUP(1,4);
 //
-//    }
+    }
 
     @org.junit.Test
     public void csac(){

@@ -9,6 +9,24 @@ public class Statistic {
     private Integer hits;        // 点击量
     private Integer commentsNum;// 评论总量
 
+    public Statistic(Integer id, Integer articleId, Integer hits, Integer commentsNum, Integer favorCount) {
+        this.id = id;
+        this.articleId = articleId;
+        this.hits = hits;
+        this.commentsNum = commentsNum;
+        this.favorCount = favorCount;
+    }
+
+    private Integer favorCount;
+
+    public Integer getFavorCount() {
+        return favorCount;
+    }
+
+    public void setFavorCount(Integer favorCount) {
+        this.favorCount = favorCount;
+    }
+
     public Integer getId() {
         return id;
     }
