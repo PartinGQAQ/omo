@@ -42,8 +42,7 @@ public interface ArticleMapper {
     //改变文章点赞数
     @Update("UPDATE t_article SET favorCount=#{favorCount}" +
             " WHERE id=#{id}")
-    public void favorNumberUP(Integer favorCount,Integer id);
-
+    public void updateFavorNumber(Integer favorCount, Integer id);
 
     //添加点赞关系表
     @Insert("INSERT INTO t_favor (article_id,user_id) VALUES(#{article_id},#{user_id})")

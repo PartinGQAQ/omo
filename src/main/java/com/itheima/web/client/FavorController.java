@@ -48,7 +48,7 @@ public class FavorController {
         //根据用户的名字获取id
         String userName = userDetails.getUsername();
         Map<String,Object> res = articleService.favorCountDOWN(article,userName);
-        res.put("code","取消点赞");
+        res.put("code","200");
         res.put("message","取消点赞");
         return res;
     }

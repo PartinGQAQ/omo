@@ -58,7 +58,7 @@
         });
     });
 
-    //点击后触发函数ClickCount
+    //加载好页面后触发
     $(document).ready(function () {
         //选择是否已经点过赞
         var isFavor = Number($('.isFavor').html())
@@ -74,8 +74,6 @@
 
 
 
-    //获取当前的文章的ID
-    var article_id = $('.article-id').html();
     // likeClickCount
     function likeClickCount() {
     //Number函数将对象的值转换成数字

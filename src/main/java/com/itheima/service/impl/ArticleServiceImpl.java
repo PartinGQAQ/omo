@@ -77,7 +77,6 @@ public class ArticleServiceImpl implements IArticleService {
         Article article = null;
         Object o = redisTemplate.opsForValue().get("article_" + id);
 
-        //查询是否已经点赞过了
         if(o!=null){
             article=(Article)o;
         }else{
@@ -128,20 +127,17 @@ public class ArticleServiceImpl implements IArticleService {
         //获取用户的ID
         User user = userMapper.findByUsername(userName);
         Integer user_id = user.getId();
-
         //获取文章
         Integer article_id = article.getId();
         article = articleMapper.selectArticleWithId(article_id);
         //当前点赞数增加
         article.setFavorCount(article.getFavorCount() + 1);
         //当前的点赞增加
-        articleMapper.favorNumberUP(article.getFavorCount(),article_id);
+        articleMapper.updateFavorNumber(article.getFavorCount(),article_id);
         //更新点赞关系表
         articleMapper.addFavor(article_id,user_id);
-
         //更新统计表
         statisticMapper.updateArticleFavorCountWithId(article.getFavorCount(),article_id);
-
         //更新redis中的article
         redisTemplate.delete("article_" + article.getId());
 
@@ -160,17 +156,15 @@ public class ArticleServiceImpl implements IArticleService {
         //获取用户的ID
         User user = userMapper.findByUsername(userName);
         Integer user_id = user.getId();
-
         //获取文章
         Integer article_id = article.getId();
         article = articleMapper.selectArticleWithId(article.getId());
         //当前点赞数减少
         article.setFavorCount(article.getFavorCount() - 1);
         //当前的点赞减少
-        articleMapper.favorNumberUP(article.getFavorCount(),article_id);
+        articleMapper.updateFavorNumber(article.getFavorCount(),article_id);
         //更新点赞关系表
         articleMapper.cancelFavor(article_id,user_id);
-
         //更新统计表
         statisticMapper.updateArticleFavorCountWithId(article.getFavorCount(),article_id);
 

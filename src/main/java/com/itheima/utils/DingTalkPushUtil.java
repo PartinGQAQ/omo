@@ -41,7 +41,6 @@ public class DingTalkPushUtil {
      */
     private void push(Object obj) {
         try {
-            //自定义钉钉机器人生成链接  access_token钉钉自动生成
             URL url = new URL("https://oapi.dingtalk.com/robot/send?access_token=7b19749f9f57a05bb24c33ffa76274ab6cb46ec780bbd0ec14c5e1673bd725ed");
             //打开连接
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
